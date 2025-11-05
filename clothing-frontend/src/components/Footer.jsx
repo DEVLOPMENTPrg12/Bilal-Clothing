@@ -6,7 +6,8 @@ export default function Footer() {
       {/* Logo */}
       <div className="text-center sm:text-left">
         <h1 className="text-3xl font-bold mb-4">
-          <span className="text-purple-800">Bilal</span> Shop
+          <span className="text-purple-800">Bilal</span>  Clothing
+
         </h1>
         <p className="text-gray-400">Your favorite fashion destination.</p>
       </div>
