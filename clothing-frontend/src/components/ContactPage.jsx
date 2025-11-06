@@ -14,7 +14,7 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !message) {
-      toast.error("Veuillez remplir tous les champs !");
+      toast.error("Please fill in all fields!");
       return;
     }
 
@@ -33,7 +33,7 @@ export default function ContactPage() {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de l'envoi du message.");
+      toast.error("Error sending the message.");
     } finally {
       setLoading(false);
     }
@@ -48,16 +48,16 @@ export default function ContactPage() {
           {/* Left side - Info */}
           <div className="bg-gray-900 text-white p-10 flex flex-col justify-between">
             <div>
-              <h2 className="text-4xl font-bold mb-6">Contactez-nous</h2>
+              <h2 className="text-4xl font-bold mb-6">Contact Us</h2>
               <p className="text-gray-300 mb-10 leading-relaxed">
-                Vous avez une question, un projet ou souhaitez collaborer ?
-                N’hésitez pas à nous contacter ou à nous suivre sur nos réseaux sociaux.
+                Have a question, a project, or want to collaborate? 
+                Feel free to reach out or follow us on our social media.
               </p>
 
               <div className="space-y-5">
                 <div className="flex items-center space-x-4">
                   <Mail className="w-5 h-5 text-blue-400" />
-                  <span>contact@exemple.com</span>
+                  <span>contact@example.com</span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <Phone className="w-5 h-5 text-blue-400" />
@@ -65,13 +65,13 @@ export default function ContactPage() {
                 </div>
                 <div className="flex items-center space-x-4">
                   <MapPin className="w-5 h-5 text-blue-400" />
-                  <span>Casablanca, Maroc</span>
+                  <span>Casablanca, Morocco</span>
                 </div>
               </div>
 
               {/* Social Media */}
               <div className="mt-10">
-                <h3 className="text-lg font-semibold mb-3 text-gray-100">Suivez-nous</h3>
+                <h3 className="text-lg font-semibold mb-3 text-gray-100">Follow Us</h3>
                 <div className="flex space-x-4">
                   <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="p-2 bg-blue-600 rounded-full hover:bg-blue-700 transition">
                     <Facebook className="w-5 h-5" />
@@ -90,19 +90,19 @@ export default function ContactPage() {
             </div>
 
             <div className="text-sm text-gray-400 mt-10">
-              © 2025 VotreEntreprise. Tous droits réservés.
+              © 2025 YourCompany. All rights reserved.
             </div>
           </div>
 
           {/* Right side - Form */}
           <div className="p-10">
-            <h3 className="text-2xl font-semibold mb-6 text-gray-800">Envoyez-nous un message</h3>
+            <h3 className="text-2xl font-semibold mb-6 text-gray-800">Send Us a Message</h3>
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Nom complet</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1">Full Name</label>
                 <input
                   type="text"
-                  placeholder="Votre nom"
+                  placeholder="Your Name"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -113,7 +113,7 @@ export default function ContactPage() {
                 <label className="block text-sm font-medium text-gray-600 mb-1">Email</label>
                 <input
                   type="email"
-                  placeholder="votre@email.com"
+                  placeholder="your@email.com"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -124,7 +124,7 @@ export default function ContactPage() {
                 <label className="block text-sm font-medium text-gray-600 mb-1">Message</label>
                 <textarea
                   rows="5"
-                  placeholder="Votre message..."
+                  placeholder="Your message..."
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
@@ -136,7 +136,7 @@ export default function ContactPage() {
                 className={`w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition duration-200 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 disabled={loading}
               >
-                {loading ? "Envoi..." : "Envoyer le message"}
+                {loading ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
