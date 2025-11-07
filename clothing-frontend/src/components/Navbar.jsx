@@ -11,7 +11,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const cartItems = useSelector(state => state.cart.items);
 
-
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -49,21 +48,61 @@ export default function Navbar() {
           </svg>
         </button>
 
-        <ul className={`${isOpen ? "block" : "hidden"} md:flex md:items-center md:space-x-8 absolute md:static left-0 w-full md:w-auto bg-white md:bg-transparent text-center md:text-left py-4 md:py-0 top-16 md:top-0 shadow-md md:shadow-none`}>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/shop">Shop</Link></li>
-          <li><Link to="/blog">Blog</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
-          {user && <li><Link to="/myorders">My Orders</Link></li>}
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex md:items-center md:space-x-8">
+          <li><Link to="/" className="text-gray-700 hover:text-purple-800 transition">Home</Link></li>
+          <li><Link to="/shop" className="text-gray-700 hover:text-purple-800 transition">Shop</Link></li>
+          <li><Link to="/blog" className="text-gray-700 hover:text-purple-800 transition">Blog</Link></li>
+          <li><Link to="/contact" className="text-gray-700 hover:text-purple-800 transition">Contact</Link></li>
+          {user && <li><Link to="/myorders" className="text-gray-700 hover:text-purple-800 transition">My Orders</Link></li>}
         </ul>
 
+        {/* Mobile Menu */}
+        <ul className={`${isOpen ? "block" : "hidden"} md:hidden absolute left-0 w-full bg-white text-center py-4 top-16 shadow-md`}>
+          <li className="py-2"><Link to="/" onClick={() => setIsOpen(false)} className="text-gray-700 hover:text-purple-800 transition">Home</Link></li>
+          <li className="py-2"><Link to="/shop" onClick={() => setIsOpen(false)} className="text-gray-700 hover:text-purple-800 transition">Shop</Link></li>
+          <li className="py-2"><Link to="/blog" onClick={() => setIsOpen(false)} className="text-gray-700 hover:text-purple-800 transition">Blog</Link></li>
+          <li className="py-2"><Link to="/contact" onClick={() => setIsOpen(false)} className="text-gray-700 hover:text-purple-800 transition">Contact</Link></li>
+          {user && <li className="py-2"><Link to="/myorders" onClick={() => setIsOpen(false)} className="text-gray-700 hover:text-purple-800 transition">My Orders</Link></li>}
+          {/* Mobile Cart and Auth */}
+          <li className="py-2">
+            <button
+              onClick={() => { setIsCartOpen(true); setIsOpen(false); }}
+              className="text-gray-700 hover:text-purple-800 transition"
+            >
+              🛒 Cart ({cartItems?.length || 0})
+            </button>
+          </li>
+          {user ? (
+            <li className="py-2">
+              <button
+                onClick={() => { handleLogout(); setIsOpen(false); }}
+                className="text-red-600 hover:text-red-800 transition"
+              >
+                Logout
+              </button>
+            </li>
+          ) : (
+            <li className="py-2">
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="text-purple-800 hover:text-purple-600 transition"
+              >
+                Login
+              </Link>
+            </li>
+          )}
+        </ul>
+
+        {/* Desktop Profile and Cart */}
         <div className="hidden md:flex items-center space-x-4">
           {user ? (
             <div className="relative">
               {/* Profile image/button */}
               <button
                 onClick={() => setIsProfileOpen(prev => !prev)}
-                className="w-10 h-10 rounded-full border-2 border-purple-600 flex items-center justify-center text-purple-800 font-bold text-lg"
+                className="w-10 h-10 rounded-full border-2 border-purple-600 flex items-center justify-center text-purple-800 font-bold text-lg hover:bg-purple-50 transition"
               >
                 {user.name.charAt(0).toUpperCase()}
               </button>
@@ -102,20 +141,19 @@ export default function Navbar() {
           ) : (
             <Link
               to="/login"
-              className="bg-purple-100 text-purple-800 py-2 px-4 rounded-full font-medium"
+              className="bg-purple-100 text-purple-800 py-2 px-4 rounded-full font-medium hover:bg-purple-200 transition"
             >
               Login
             </Link>
           )}
 
           {/* Cart */}
-         <button
-  className="bg-purple-600 text-white py-2 px-4 rounded-full flex items-center"
-  onClick={() => setIsCartOpen(true)}
->
-  🛒 Cart ({cartItems?.length || 0})
-</button>
-
+          <button
+            className="bg-purple-600 text-white py-2 px-4 rounded-full flex items-center hover:bg-purple-700 transition"
+            onClick={() => setIsCartOpen(true)}
+          >
+            🛒 Cart ({cartItems?.length || 0})
+          </button>
         </div>
       </div>
 

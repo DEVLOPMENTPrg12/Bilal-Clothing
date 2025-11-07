@@ -15,6 +15,7 @@ const getImageSrc = (url) => {
 };
 
 // 🟣 ProductCard
+// 🟣 ProductCard
 function ProductCard({ product, onViewDetail, onAddToCart }) {
   const handleAddToCart = () => {
     onAddToCart({
@@ -27,56 +28,63 @@ function ProductCard({ product, onViewDetail, onAddToCart }) {
   };
 
   return (
-    <div className="border rounded-lg m-2 w-72 shadow-lg p-3 bg-white hover:shadow-2xl transition-shadow duration-300">
+    <div className="border rounded-lg m-2 shadow-lg p-3 bg-white hover:shadow-2xl transition-shadow duration-300 flex flex-col">
       <img
         src={getImageSrc(product.images[0])}
         alt={product.name}
-        className="w-full h-64 object-contain rounded-md bg-gray-100"
+        className="w-full h-48 sm:h-64 object-contain rounded-md bg-gray-100"
       />
 
-      <div className="flex justify-between items-center mt-3">
-        <h1 className="font-bold text-lg">{product.name}</h1>
-        <span className="text-pink-600 font-semibold">${product.price}</span>
+      {/* Content flex-1 */}
+      <div className="flex flex-col flex-1 mt-3">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+          <h1 className="font-bold text-lg">{product.name}</h1>
+          <span className="text-pink-600 font-semibold text-lg sm:text-xl">${product.price}</span>
+        </div>
+
+        <div className="flex mt-2">
+          {product.colors.map((color, index) => (
+            <div
+              key={index}
+              className="rounded-full h-5 w-5 shadow-md mr-2 border"
+              style={{ backgroundColor: color }}
+            ></div>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap mt-2">
+          {product.sizes.map((size, index) => (
+            <p
+              key={index}
+              className="border text-sm rounded-lg w-10 h-8 px-2 py-1 m-1 flex items-center justify-center"
+            >
+              {size}
+            </p>
+          ))}
+        </div>
       </div>
 
-      <div className="flex mt-2">
-        {product.colors.map((color, index) => (
-          <div
-            key={index}
-            className="rounded-full h-5 w-5 shadow-md mr-2 border"
-            style={{ backgroundColor: color }}
-          ></div>
-        ))}
-      </div>
+      {/* Buttons push to bottom */}
+     {/* Buttons push to bottom */}
+<div className="flex flex-col sm:flex-row mt-3 space-y-2 sm:space-y-0 sm:space-x-2">
+  <button
+    className="bg-gradient-to-r from-red-600 to-pink-500 rounded-full py-2 px-4 text-sm text-white hover:from-red-700 hover:to-pink-600 flex-1"
+    onClick={() => onViewDetail(product)}
+  >
+    View Details
+  </button>
+  <button
+    className="bg-purple-600 rounded-full py-2 px-4 text-sm text-white hover:bg-purple-700 flex-1"
+    onClick={handleAddToCart}
+  >
+    Add to Cart
+  </button>
+</div>
 
-      <div className="flex flex-wrap mt-2">
-        {product.sizes.map((size, index) => (
-          <p
-            key={index}
-            className="border text-sm rounded-lg w-10 h-8 px-2 py-1 m-1 flex items-center justify-center"
-          >
-            {size}
-          </p>
-        ))}
-      </div>
-
-      <div className="flex mt-3">
-        <button
-          className="bg-gradient-to-r from-red-600 to-pink-500 rounded-full py-2 px-4 text-sm text-white hover:from-red-700 hover:to-pink-600 flex-1 mr-2"
-          onClick={() => onViewDetail(product)}
-        >
-          View Details
-        </button>
-        <button
-          className="bg-purple-600 rounded-full py-2 px-4 text-sm text-white hover:bg-purple-700 flex-1"
-          onClick={handleAddToCart}
-        >
-          Add to Cart
-        </button>
-      </div>
     </div>
   );
 }
+
 
 // 🟣 ProductModal
 function ProductModal({ product, onClose, onAddToCart }) {
@@ -86,10 +94,10 @@ function ProductModal({ product, onClose, onAddToCart }) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-11/12 md:w-3/4 lg:w-2/3 p-6 relative">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl h-auto max-h-[90vh] overflow-y-auto p-4 sm:p-6 relative">
         <button
-          className="absolute top-4 right-4 text-gray-700 text-2xl font-bold"
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-700 text-xl sm:text-2xl font-bold"
           onClick={onClose}
         >
           &times;
@@ -100,15 +108,15 @@ function ProductModal({ product, onClose, onAddToCart }) {
               key={selectedImage}
               src={getImageSrc(selectedImage)}
               alt={product.name}
-              className="w-full h-80 object-contain rounded-md transition-all duration-300"
+              className="w-full h-64 sm:h-80 object-contain rounded-md transition-all duration-300"
             />
-            <div className="flex mt-2 space-x-2">
+            <div className="flex mt-2 space-x-2 overflow-x-auto">
               {product.images.map((img, index) => (
                 <img
                   key={index}
                   src={getImageSrc(img)}
                   alt={`thumb-${index}`}
-                  className={`w-20 h-20 object-contain rounded-md cursor-pointer border-2 bg-gray-100 transition-transform duration-200 ${
+                  className={`w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-md cursor-pointer border-2 bg-gray-100 transition-transform duration-200 ${
                     selectedImage === img
                       ? "border-purple-500 scale-105"
                       : "border-transparent hover:scale-105"
@@ -120,11 +128,11 @@ function ProductModal({ product, onClose, onAddToCart }) {
           </div>
 
           <div className="lg:w-1/2 lg:pl-6 mt-4 lg:mt-0">
-            <h2 className="text-2xl font-bold">{product.name}</h2>
-            <p className="text-purple-700 font-bold text-xl mt-2">
+            <h2 className="text-xl sm:text-2xl font-bold">{product.name}</h2>
+            <p className="text-purple-700 font-bold text-lg sm:text-xl mt-2">
               ${product.price}
             </p>
-            <p className="mt-4 text-gray-700">{product.description}</p>
+            <p className="mt-4 text-gray-700 text-sm sm:text-base">{product.description}</p>
 
             <div className="flex mt-2">
               {product.colors.map((color, index) => (
@@ -143,11 +151,11 @@ function ProductModal({ product, onClose, onAddToCart }) {
 
             <div className="mt-4">
               <p className="font-semibold mb-1">Size:</p>
-              <div className="flex space-x-2">
+              <div className="flex flex-wrap space-x-2">
                 {product.sizes.map((size, index) => (
                   <button
                     key={index}
-                    className={`border px-3 py-1 rounded-md ${
+                    className={`border px-3 py-1 rounded-md text-sm ${
                       selectedSize === size ? "bg-purple-600 text-white" : ""
                     }`}
                     onClick={() => setSelectedSize(size)}
@@ -159,7 +167,7 @@ function ProductModal({ product, onClose, onAddToCart }) {
             </div>
 
             <div className="mt-4 flex items-center space-x-2">
-              <p className="font-semibold">Quantity:</p>
+              <p className="font-semibold text-sm sm:text-base">Quantity:</p>
               <input
                 type="number"
                 min="1"
@@ -169,9 +177,9 @@ function ProductModal({ product, onClose, onAddToCart }) {
               />
             </div>
 
-            <div className="mt-6 flex space-x-2">
+            <div className="mt-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
               <button
-                className="bg-gradient-to-r from-red-600 to-pink-500 text-white py-2 px-4 rounded-full hover:from-red-700 hover:to-pink-600"
+                className="bg-gradient-to-r from-red-600 to-pink-500 text-white py-2 px-4 rounded-full hover:from-red-700 hover:to-pink-600 flex-1"
                 onClick={() => {
                   onAddToCart({
                     productId: product._id,
@@ -186,7 +194,7 @@ function ProductModal({ product, onClose, onAddToCart }) {
                 Add to Cart
               </button>
               <button
-                className="bg-gray-300 text-gray-700 py-2 px-4 rounded-full hover:bg-gray-400"
+                className="bg-gray-300 text-gray-700 py-2 px-4 rounded-full hover:bg-gray-400 flex-1"
                 onClick={onClose}
               >
                 Close
@@ -234,7 +242,6 @@ export default function ProductList() {
     });
   };
 
-  // 🔥 Global search filter (name, description, colors, sizes, tags)
   const filterProducts = (productsArray) => {
     return productsArray.filter((p) => {
       const term = searchTerm.toLowerCase();
@@ -254,18 +261,17 @@ export default function ProductList() {
   const menProducts = filterProducts(products.filter((p) => p.tags?.includes("men")));
   const womenProducts = filterProducts(products.filter((p) => p.tags?.includes("women")));
 
-  // Extract unique colors and sizes for filter buttons
   const allColors = [...new Set(products.flatMap((p) => p.colors))];
   const allSizes = [...new Set(products.flatMap((p) => p.sizes))];
 
   const renderFilterBar = () => (
-    <div className="flex flex-wrap items-center gap-4 mb-6">
+    <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-4 mb-6">
       <input
         type="text"
         placeholder="Search products..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="border rounded-lg px-3 py-2 w-64 focus:outline-purple-500"
+        className="border rounded-lg px-3 py-2 w-full sm:w-64 focus:outline-purple-500"
       />
       <div className="flex flex-wrap gap-2">
         {allColors.map((color, index) => (
@@ -298,7 +304,7 @@ export default function ProductList() {
           setColorFilter("");
           setSizeFilter("");
         }}
-        className="bg-gray-200 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-300"
+        className="bg-gray-200 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-300 w-full sm:w-auto"
       >
         Clear
       </button>
@@ -306,12 +312,15 @@ export default function ProductList() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pt-20 px-4 sm:px-6 lg:px-10 xl:px-12">
       <Navbar />
-      <div className="m-12">
-        <h1 className="text-2xl font-bold mb-4">Men's Collection</h1>
+      <div className="m-4 sm:m-8 lg:m-12">
+        <h1 className="text-xl sm:text-2xl font-bold mb-4">Men's Collection</h1>
         {renderFilterBar()}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div
+          className="grid gap-4 sm:gap-6"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}
+        >
           {menProducts.map((product) => (
             <ProductCard
               key={product._id}
@@ -322,9 +331,12 @@ export default function ProductList() {
           ))}
         </div>
 
-        <h1 className="text-2xl font-bold mb-4 mt-12">Women's Collection</h1>
+        <h1 className="text-xl sm:text-2xl font-bold mb-4 mt-8 sm:mt-12">Women's Collection</h1>
         {renderFilterBar()}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div
+          className="grid gap-4 sm:gap-6"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}
+        >
           {womenProducts.map((product) => (
             <ProductCard
               key={product._id}

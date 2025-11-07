@@ -28,26 +28,39 @@ export default function CheckoutPage() {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ country: "Morocco" }),
-        });
+        const res = await fetch(
+          "https://countriesnow.space/api/v0.1/countries/cities",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ country: "Morocco" }),
+          }
+        );
         const data = await res.json();
         if (data.data) setCities(data.data.sort());
       } catch (error) {
         console.error("Error loading cities:", error);
         setCities([
-          "Casablanca", "Rabat", "Marrakech", "Fès", "Tangier",
-          "Agadir", "Oujda", "Laâyoune", "Dakhla", "Meknès",
-          "Tétouan", "Kénitra",
+          "Casablanca",
+          "Rabat",
+          "Marrakech",
+          "Fès",
+          "Tangier",
+          "Agadir",
+          "Oujda",
+          "Laâyoune",
+          "Dakhla",
+          "Meknès",
+          "Tétouan",
+          "Kénitra",
         ]);
       }
     };
     fetchCities();
   }, []);
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,38 +110,51 @@ export default function CheckoutPage() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
 
-      <div className="flex-grow flex items-start justify-center pt-28 pb-10">
-        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-8 max-w-6xl">
+      <div className="flex-grow flex items-start justify-center pt-24 pb-10 px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl">
           {/* 🧾 Shipping form */}
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Shipping Information</h2>
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg"
+          >
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800 text-center sm:text-left">
+              Shipping Information
+            </h2>
 
             {["fullName", "address", "phone"].map((field) => (
-              <div className="mb-4" key={field}>
-                <label className="block mb-2 font-medium">{field === "fullName" ? "Full Name" : field.charAt(0).toUpperCase() + field.slice(1)}</label>
+              <div className="mb-5" key={field}>
+                <label className="block mb-2 font-medium text-gray-700">
+                  {field === "fullName"
+                    ? "Full Name"
+                    : field.charAt(0).toUpperCase() + field.slice(1)}
+                </label>
                 <input
                   type={field === "phone" ? "tel" : "text"}
                   name={field}
                   value={formData[field]}
                   onChange={handleChange}
                   required
-                  className="w-full border px-3 py-2 rounded focus:ring focus:ring-green-300"
+                  className="w-full border px-4 py-3 rounded-lg focus:ring-2 focus:ring-green-400 outline-none transition text-gray-800"
                 />
               </div>
             ))}
 
-            <div className="mb-4">
-              <label className="block mb-2 font-medium">City</label>
+            <div className="mb-5">
+              <label className="block mb-2 font-medium text-gray-700">
+                City
+              </label>
               <select
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
                 required
-                className="w-full border px-3 py-2 rounded focus:ring focus:ring-green-300"
+                className="w-full border px-4 py-3 rounded-lg focus:ring-2 focus:ring-green-400 outline-none transition text-gray-800"
               >
                 <option value="">-- Select your city --</option>
                 {cities.map((city, i) => (
-                  <option key={i} value={city}>{city}</option>
+                  <option key={i} value={city}>
+                    {city}
+                  </option>
                 ))}
               </select>
             </div>
@@ -136,7 +162,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={cartItems.length === 0 || loading}
-              className={`w-full mt-4 py-2 rounded text-white text-lg font-semibold transition ${
+              className={`w-full mt-4 py-3 rounded-lg text-white text-lg font-semibold transition duration-200 ${
                 cartItems.length === 0 || loading
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-green-600 hover:bg-green-700"
@@ -147,42 +173,60 @@ export default function CheckoutPage() {
           </form>
 
           {/* 🛒 Cart summary */}
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Order Summary</h2>
+          <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800 text-center sm:text-left">
+              Order Summary
+            </h2>
             {cartItems.length === 0 ? (
-              <p>Your cart is empty.</p>
+              <p className="text-center text-gray-600">Your cart is empty.</p>
             ) : (
               cartItems.map((item, index) => (
-                <div key={index} className="flex items-center justify-between mb-3">
+                <div
+                  key={index}
+                  className="flex flex-col sm:flex-row items-center sm:items-start justify-between mb-6 gap-4 border-b pb-4"
+                >
                   <img
                     src={
                       item.productId?.images?.[0]
                         ? item.productId.images[0].startsWith("http")
                           ? item.productId.images[0]
-                          : `http://localhost:5000${item.productId.images[0].startsWith("/") ? item.productId.images[0] : "/" + item.productId.images[0]}`
+                          : `http://localhost:5000${
+                              item.productId.images[0].startsWith("/")
+                                ? item.productId.images[0]
+                                : "/" + item.productId.images[0]
+                            }`
                         : "/placeholder.png"
                     }
                     alt={item.productId?.name || "Product image"}
-                    className="w-16 h-16 object-cover rounded mr-3"
+                    className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
                   />
-                  <div className="flex-1">
-                    <p className="font-semibold">{item.productId?.name}</p>
+                  <div className="flex-1 text-center sm:text-left">
+                    <p className="font-semibold text-gray-900">
+                      {item.productId?.name}
+                    </p>
                     <p className="text-sm text-gray-600">Size: {item.size}</p>
-                    <p className="text-sm text-gray-600 flex items-center gap-1">
+                    <p className="text-sm text-gray-600 flex justify-center sm:justify-start items-center gap-1">
                       Color:
                       <span
                         className="inline-block w-4 h-4 rounded-full border"
                         style={{ backgroundColor: item.color }}
                       ></span>
                     </p>
-                    <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                    <p className="text-sm text-gray-600">
+                      Quantity: {item.quantity}
+                    </p>
                   </div>
-                  <p className="font-semibold">{(item.productId?.price || 0) * item.quantity} MAD</p>
+                  <p className="font-semibold text-gray-900">
+                    {(item.productId?.price || 0) * item.quantity} MAD
+                  </p>
                 </div>
               ))
             )}
-            <hr className="my-4" />
-            <h3 className="text-xl font-semibold text-right">Total: {total} MAD</h3>
+            <div className="pt-4">
+              <h3 className="text-xl sm:text-2xl font-semibold text-right text-gray-800">
+                Total: {total} MAD
+              </h3>
+            </div>
           </div>
         </div>
       </div>
